@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth, CampModal } from '@campnetwork/origin/react';
 import { logInUser } from '@/lib/actions/user.actions';
 
@@ -9,7 +9,7 @@ const OriginAuthButton = () => {
   const [loading, setLoading] = useState(false);
 
   // Handle login when auth state changes
-  const handleAuthChange = useCallback(async () => {
+  const handleAuthChange = async () => {
     if (auth.isAuthenticated && auth.walletAddress && !loading) {
       setLoading(true);
       try {
@@ -22,12 +22,12 @@ const OriginAuthButton = () => {
         setLoading(false);
       }
     }
-  }, [auth.isAuthenticated, auth.walletAddress, loading]);
+  };
 
   // Monitor auth state changes
   useEffect(() => {
     handleAuthChange();
-  }, [handleAuthChange]);
+  }, [auth.isAuthenticated, auth.walletAddress]);
 
   return (
     <div className="flex items-center gap-2">      

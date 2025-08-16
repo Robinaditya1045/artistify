@@ -1,40 +1,31 @@
 'use client'
 
 import TokenCard from '@/components/cards/TokenCard';
+import { getMintedTokens } from '@/lib/actions/token.actions';
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 
 const Collections = () => {
-  interface Token {
-    id: string;
-    tokenThumbail: string;
-    tokenName: string;
-    availableToken: number;
-    tokenId: number;
-    tokenPrice: number;
-  }
+  // interface Token {
+  //   id: string;
+  //   tokenThumbail: string;
+  //   tokenName: string;
+  //   availableToken: number;
+  //   tokenId: number;
+  //   tokenPrice: number;
+  // }
 
-  const [tokens, setTokens] = useState<Token[]>([]);
+  const [tokens, setTokens] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
 
   const fetchTokens = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
-      
-      const response = await fetch('/api/getMintedTokens', {
-        cache: "no-store",
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
-      
-      if (!response.ok) {
-        throw new Error(`Failed to fetch tokens: ${response.statusText}`);
-      }
-      
-      const data = await response.json();
-      setTokens(data.mintedTokens || []);
+
+      const response = await getMintedTokens();
+      setTokens(response);
     } catch (error) {
       console.error('Error fetching minted tokens:', error);
       setError(error instanceof Error ? error.message : 'Failed to fetch tokens');
@@ -44,8 +35,9 @@ const Collections = () => {
   }, []);
 
   useEffect(() => {
+    setIsMounted(true);
     fetchTokens();
-  }, [fetchTokens]);
+  }, [fetchTokens, isMounted]);
 
   const memoizedTokens = useMemo(() => 
     tokens.map((token) => (
@@ -65,7 +57,7 @@ const Collections = () => {
     return (
       <div className='w-full min-h-screen pt-8 px-10 bg-[#18181a] flex items-center justify-center'>
         <div className="flex flex-col items-center space-y-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#5b5bd5]"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
           <p className="text-white text-lg">Loading tokens...</p>
         </div>
       </div>

@@ -5,8 +5,8 @@ import React, { useEffect, useState } from 'react'
 // import FeinAbi from '@/contract_data/Fein.json';
 import { ethers } from 'ethers';
 import Loader from '../loader';
-import axios from 'axios';
 import AdminTokenCard from '@/components/cards/AdminTokenCard';
+import { getTokensToDistribute } from '@/lib/actions/token.actions';
 
 const Page = () => {
     // const [Fein, setFein] = useState<any>(null);
@@ -56,9 +56,14 @@ const Page = () => {
     useEffect(() => {
         const fetchTokens = async () => {
             try {
-                const response = await axios.get('/api/getTokensToDistribute');
-                console.log('data', response.data);
-                setReleasedTokens(response.data.mintedTokens);
+                const response = await getTokensToDistribute();
+                console.log('data', response);
+                if (Array.isArray(response)) {
+                    setReleasedTokens(response);
+                } else {
+                    setReleasedTokens([]);
+                    console.error('Expected array response but got:', response);
+                }
             } catch (error) {
                 console.error('Error fetching tokens:', error);
             } finally {

@@ -133,8 +133,8 @@ const AdminTokenCard = (props: Props) => {
             </div>
 
             {isDialogOpen && (
-                <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center'>
-                    <div className='bg-[#232328] p-8 rounded-lg text-white w-1/3 relative'>
+                <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50'>
+                    <div className='bg-[#232328] p-8 rounded-lg text-white w-1/3 relative' style={{ zIndex: 51 }}>
                         <IoClose className='absolute top-4 right-4 cursor-pointer' size={24} onClick={handleCloseDialog} />
                         <h2 className='text-2xl font-semibold mb-4'>Token Details</h2>
                         <div className='mb-4'>

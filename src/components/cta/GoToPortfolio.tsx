@@ -2,11 +2,16 @@
 
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@campnetwork/origin/react';
-import { useCallback, memo } from 'react';
+import { useCallback, memo, useEffect, useState } from 'react';
 
 const GoToPortfolio = () => {
   const router = useRouter();
   const auth = useAuth();
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   const handlePortfolioRedirect = useCallback(() => {
     if (auth.walletAddress) {
@@ -14,8 +19,8 @@ const GoToPortfolio = () => {
     }
   }, [auth.walletAddress, router]);
 
-  // Only render if authenticated and has wallet address
-  if (!auth.isAuthenticated || !auth.walletAddress) {
+  // Prevent hydration mismatch: only render after mount
+  if (!hasMounted || !auth.isAuthenticated || !auth.walletAddress) {
     return null;
   }
 

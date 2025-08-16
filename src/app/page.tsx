@@ -1,29 +1,29 @@
 'use client';
 
 import React, { useEffect, useState, useCallback } from 'react';
-import axios from 'axios';
 import TokenTile from '@/components/cards/TokenTile';
 import HeroSection from '@/components/sections/HeroSection';
 import Link from 'next/link';
+import { getMintedTokens } from '@/lib/actions/token.actions';
 
-interface Token {
-  id: string;
-  tokenThumbail: string;
-  tokenName: string;
-  availableToken: number;
-  tokenPrice: number;
-  createdAt: string;
-  tokenId: number;
-  user: {
-    userInfo: {
-      name: string;
-      profilePicture: string;
-    };
-  };
-}
+// interface Token {
+//   id: string;
+//   tokenThumbail: string;
+//   tokenName: string;
+//   availableToken: number;
+//   tokenPrice: number;
+//   createdAt: string;
+//   tokenId: number;
+//   user: {
+//     userInfo: {
+//       name: string;
+//       profilePicture: string | null;
+//     };
+//   };
+// }
 
 export default function Home() {
-  const [tokens, setTokens] = useState<Token[]>([]);
+  const [tokens, setTokens] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -31,8 +31,8 @@ export default function Home() {
     try {
       setLoading(true);
       setError(null);
-      const response = await axios.get('/api/getMintedTokens');
-      setTokens(response.data.mintedTokens || []);
+      const response = await getMintedTokens();
+      setTokens(response);
     } catch (error) {
       console.error('Error fetching minted tokens:', error);
       setError('Failed to load tokens');

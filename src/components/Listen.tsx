@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import axios from 'axios';
 import { FaPlay, FaPause, FaHeart } from 'react-icons/fa';
+import { getSongs } from '@/lib/actions/song.actions';
 
 interface Song {
   id: string;
@@ -31,9 +31,9 @@ const Listen = () => {
     try {
       setLoading(true);
       setError(null);
-      
-      const response = await axios.get('/api/getSongs');
-      setSongs(response.data.songs || []);
+
+      const response = await getSongs();
+      setSongs(response || []);
     } catch (error) {
       console.error('Error fetching songs:', error);
       setError('Failed to load songs. Please try again.');

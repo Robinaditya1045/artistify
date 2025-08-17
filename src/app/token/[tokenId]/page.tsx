@@ -124,9 +124,10 @@ const Page = ({ params }: PageProps) => {
 
   if (!tokenData) {
     return (
-      <div className='bg-[#0a0a0a] w-full min-h-screen text-orange-500 flex items-center justify-center'>
-        <FaSpinner className="animate-spin text-4xl" />
-      </div>
+      // <div className='bg-[#0a0a0a] w-full min-h-screen text-orange-500 flex items-center justify-center'>
+      //   <FaSpinner className="animate-spin text-4xl" />
+      // </div>
+      <></>
     );
   }
 

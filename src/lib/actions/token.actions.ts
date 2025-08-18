@@ -180,17 +180,31 @@ export const getTokensToDistribute = async() => {
     }
 }
 
-export const getUserTokens = async (address: string) => {
-    try {
-      const userTokens = await prisma.boughtToken.findMany({
-        where: { accountAddress: address },
-        include: {
-          mintedToken: true,
-        },
-      });
-      return userTokens;
-    } catch (error) {
-      console.error('Error fetching user tokens:', error);
-      throw new Error('Error fetching user tokens');
+export const getUserMintedTokens = async (address: string) => {
+  try {
+    // Find the user by their account address
+    const user = await prisma.user.findUnique({
+      where: { accountAddress: address },
+      include: {
+        mintedTokens: {
+          include: {
+            user: {
+              include: {
+                userInfo: true
+              }
+            }
+          }
+        }
+      }
+    });
+    
+    if (!user) {
+      throw new Error('User not found');
     }
+    
+    return user.mintedTokens;
+  } catch (error) {
+    console.error('Error fetching user minted tokens:', error);
+    throw new Error('Error fetching user minted tokens');
+  }
 }

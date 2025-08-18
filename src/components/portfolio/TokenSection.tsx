@@ -4,7 +4,7 @@ import Link from 'next/link';
 import React, { useEffect, useState, useCallback } from 'react';
 import OwnerTokenCard from '../cards/OwnerTokenCard';
 import { useAuth } from '@campnetwork/origin/react';
-import { getUserTokens } from '@/lib/actions/token.actions';
+import { getUserMintedTokens } from '@/lib/actions/token.actions';
 
 const TokenSection = ({ accountAddress }: { accountAddress: string }) => {
   const auth = useAuth();
@@ -37,7 +37,7 @@ const TokenSection = ({ accountAddress }: { accountAddress: string }) => {
       setLoading(true);
       setError(null);
 
-      const response = await getUserTokens(accountAddress);
+      const response = await getUserMintedTokens(accountAddress);
       console.log('User tokens:', response)
 
       setUserData(response);
@@ -55,13 +55,13 @@ const TokenSection = ({ accountAddress }: { accountAddress: string }) => {
 
   const renderTokens = userData.map((token) => (
     <OwnerTokenCard
-      key={token.mintedToken.id}
-      imageUrl={`https://emerald-managerial-firefly-535.mypinata.cloud/ipfs/${token.mintedToken.tokenThumbail}`}
-      tokenName={token.mintedToken.tokenName}
-      availableToken={token.mintedToken.availableToken}
-      tokenPrice={token.mintedToken.tokenPrice}
-      isReleased={token.mintedToken.isReleased}
-      tokenId={Number(token.mintedToken.tokenId)}
+      key={token.id}
+      imageUrl={`https://emerald-managerial-firefly-535.mypinata.cloud/ipfs/${token.tokenThumbail}`}
+      tokenName={token.tokenName}
+      availableToken={token.availableToken}
+      tokenPrice={token.tokenPrice}
+      isReleased={token.isReleased}
+      tokenId={Number(token.tokenId)}
     />
   )) || [];
 

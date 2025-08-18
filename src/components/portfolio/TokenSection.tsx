@@ -37,7 +37,7 @@ const TokenSection = ({ accountAddress }: { accountAddress: string }) => {
       setLoading(true);
       setError(null);
 
-      const response = await getUserTokens(auth.walletAddress);
+      const response = await getUserTokens(accountAddress);
       console.log('User tokens:', response)
 
       setUserData(response);

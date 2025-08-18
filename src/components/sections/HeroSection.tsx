@@ -3,6 +3,7 @@
 import React from 'react';
 import { FaMusic, FaUsers, FaEthereum, FaArrowUp } from 'react-icons/fa';
 import { useAuth } from '@campnetwork/origin/react';
+import Link from 'next/link';
 
 const HeroSection = () => {
   const auth = useAuth();
@@ -21,7 +22,7 @@ const HeroSection = () => {
         <div className="mb-12">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-4xl font-light text-white mb-2">Sound Stake</h1>
+              <h1 className="text-4xl font-light text-white mb-2">Artistify</h1>
               <p className="text-gray-400">Fractionalized Music NFT Marketplace</p>
             </div>
             <div className="text-right">
@@ -52,12 +53,16 @@ const HeroSection = () => {
         {/* Quick Actions */}
         {auth.isAuthenticated && (
           <div className="flex gap-4 justify-center">
+            <Link href={`/mint`}>
             <button className="bg-orange-500 text-white px-6 py-2 rounded-md font-medium hover:bg-orange-600 transition-colors">
               Create Drop
             </button>
-            <button className="border border-gray-600 text-white px-6 py-2 rounded-md font-medium hover:border-orange-500 hover:text-orange-400 transition-colors">
-              View Portfolio
-            </button>
+            </Link>
+            <Link href={`/portfolio/${auth.walletAddress}`}>
+              <button className="border border-gray-600 text-white px-6 py-2 rounded-md font-medium hover:border-orange-500 hover:text-orange-400 transition-colors">
+                View Portfolio
+              </button>
+            </Link>
           </div>
         )}
       </div>

@@ -21,15 +21,26 @@ export default function UserInformation({ user }: { user: any }) {
               <p className='opacity-60 text-gray-400'>{user.accountAddress.substr(0, 6) + "..." + user.accountAddress.substr(user.accountAddress.length - 3, user.accountAddress.length - 1)}</p>
             </div>
           </div>
-          <div className='flex items-center gap-6'>
-            <div className='fex flex-col justify-center'>
-              {/* <p>Complete your Profile</p> */}
-              <button onClick={handleOnboard} className='text-center bg-orange-500 hover:bg-orange-600 transition-colors px-4 py-2 rounded-xl text-white'>OnBoard Now</button>
+          {!user.isOnboarded ? (
+            <div className='flex items-center gap-6'>
+              <div className='flex flex-col justify-center'>
+                {/* <p>Complete your Profile</p> */}
+                <button onClick={handleOnboard} className='text-center bg-orange-500 hover:bg-orange-600 transition-colors px-4 py-2 rounded-xl text-white'>OnBoard Now</button>
+              </div>
+              <CircularProgress size="lg" determinate value={66.67} color={'warning'} variant='solid' sx={{ color: '#FFA500' }}>
+                <p className='text-white'>2 / 3</p>
+              </CircularProgress>
             </div>
-            <CircularProgress size="lg" determinate value={66.67} color={'neutral'} variant='solid'>
-              <p className='text-white'>2 / 3</p>
-            </CircularProgress>
-          </div>
+          ) : (
+            <div className='flex items-center gap-6'>
+              <button 
+                onClick={() => router.push('/admin')} 
+                className='text-center bg-blue-600 hover:bg-blue-700 transition-colors px-4 py-2 rounded-xl text-white'
+              >
+                Admin Dashboard
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

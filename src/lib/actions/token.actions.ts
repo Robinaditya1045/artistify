@@ -179,3 +179,18 @@ export const getTokensToDistribute = async() => {
       return error;
     }
 }
+
+export const getUserTokens = async (address: string) => {
+    try {
+      const userTokens = await prisma.boughtToken.findMany({
+        where: { accountAddress: address },
+        include: {
+          mintedToken: true,
+        },
+      });
+      return userTokens;
+    } catch (error) {
+      console.error('Error fetching user tokens:', error);
+      throw new Error('Error fetching user tokens');
+    }
+}

@@ -17,7 +17,7 @@ export default async function PortfolioPage({ params }: { params: { address: str
   return (
     <>
       <UserInformation user={user} />
-      <TokenSection />
+      <TokenSection accountAddress={address.toString()} />
     </>
   );
 }

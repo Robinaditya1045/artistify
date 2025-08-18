@@ -100,7 +100,7 @@ export default function Home() {
             <div className="bg-[#131316] p-6 rounded-lg hover:bg-[#1a1a1f] transition-colors">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                <span className="text-gray-400 text-sm">2 days ago</span>
+                <span className="text-gray-400 text-sm">7 days ago</span>
               </div>
               <h3 className="text-white font-medium mb-2">Enhanced Analytics Dashboard</h3>
               <p className="text-gray-400 text-sm">

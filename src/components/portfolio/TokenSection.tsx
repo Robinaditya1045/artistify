@@ -4,52 +4,43 @@ import Link from 'next/link';
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import OwnerTokenCard from '../cards/OwnerTokenCard';
 import { useAuth } from '@campnetwork/origin/react';
+import { getUserTokens } from '@/lib/actions/token.actions';
 
-const TokenSection = () => {
+const TokenSection = ({ accountAddress }: { accountAddress: string }) => {
   const auth = useAuth();
   const [activeTab, setActiveTab] = useState('Minted Tokens');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
-  interface UserData {
-    accountAddress: string;
-    mintedTokens: {
-      id: string;
-      tokenThumbail: string;
-      tokenName: string;
-      availableToken: number;
-      tokenPrice: number;
-      isReleased: boolean;
-      tokenId: string;
-    }[];
-  }
+  // interface UserData {
+  //   accountAddress: string;
+  //   mintedTokens: {
+  //     id: string;
+  //     tokenThumbail: string;
+  //     tokenName: string;
+  //     availableToken: number;
+  //     tokenPrice: number;
+  //     isReleased: boolean;
+  //     tokenId: string;
+  //   }[];
+  // }
 
-  const [userData, setUserData] = useState<UserData | null>(null);
+  const [userData, setUserData] = useState<any[]>([]);
 
   const fetchUserData = useCallback(async () => {
     if (!auth.isAuthenticated || !auth.walletAddress) {
-      setUserData(null);
+      setUserData([]);
       return;
     }
 
     try {
       setLoading(true);
       setError(null);
-      
-      const response = await fetch('/api/getUserData', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ address: auth.walletAddress }),
-      });
 
-      if (!response.ok) {
-        throw new Error(`Failed to fetch user data: ${response.statusText}`);
-      }
+      const response = await getUserTokens(auth.walletAddress);
+      console.log('User tokens:', response)
 
-      const data = await response.json();
-      setUserData(data.userDetails);
+      setUserData(response);
     } catch (error) {
       console.error('Error fetching user data:', error);
       setError(error instanceof Error ? error.message : 'Failed to fetch user data');
@@ -63,18 +54,17 @@ const TokenSection = () => {
   }, [fetchUserData]);
 
   const memoizedTokens = useMemo(() => 
-    userData?.mintedTokens.map((token) => (
+    userData.map((token) => (
       <OwnerTokenCard
-        key={token.id}
-        imageUrl={`https://emerald-managerial-firefly-535.mypinata.cloud/ipfs/${token.tokenThumbail}`}
-        tokenName={token.tokenName}
-        availableToken={token.availableToken}
-        tokenPrice={token.tokenPrice}
-        isReleased={token.isReleased}
-        tokenId={Number(token.tokenId)}
+        key={token.mintedToken.id}
+        imageUrl={`https://emerald-managerial-firefly-535.mypinata.cloud/ipfs/${token.mintedToken.tokenThumbail}`}
+        tokenName={token.mintedToken.tokenName}
+        availableToken={token.mintedToken.availableToken}
+        tokenPrice={token.mintedToken.tokenPrice}
+        isReleased={token.mintedToken.isReleased}
+        tokenId={Number(token.mintedToken.tokenId)}
       />
-    )) || [], 
-    [userData?.mintedTokens]
+    )) || [], [userData]
   );
 
   const renderContent = () => {
@@ -123,12 +113,12 @@ const TokenSection = () => {
       case 'Minted Tokens':
         return (
           <div className='w-full mt-6'>
-            {userData?.mintedTokens && userData.mintedTokens.length > 0 ? (
+            {userData && userData.length > 0 ? (
               <>
                 <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6'>
                   {memoizedTokens}
                 </div>
-                <Link href={`/mint?address=${userData?.accountAddress}`}>
+                <Link href={`/mint?address=${accountAddress}`}>
                   <button className='bg-orange-500 text-white px-4 py-2 rounded-xl mt-4 hover:bg-orange-600 transition-colors'>
                     Mint Token
                   </button>
@@ -137,7 +127,7 @@ const TokenSection = () => {
             ) : (
               <div className='w-full flex flex-col items-center justify-center pt-20'>
                 <p className='text-gray-500 text-lg mb-4'>No minted tokens yet</p>
-                <Link href={`/mint?address=${userData?.accountAddress}`}>
+                <Link href={`/mint?address=${accountAddress}`}>
                   <button className='bg-orange-500 text-white px-6 py-3 rounded-xl hover:bg-orange-600 transition-colors'>
                     Mint Your First Token
                   </button>

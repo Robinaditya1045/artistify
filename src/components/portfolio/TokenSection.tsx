@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import OwnerTokenCard from '../cards/OwnerTokenCard';
 import { useAuth } from '@campnetwork/origin/react';
 import { getUserTokens } from '@/lib/actions/token.actions';
@@ -51,7 +51,7 @@ const TokenSection = ({ accountAddress }: { accountAddress: string }) => {
 
   useEffect(() => {
     fetchUserData();
-  }, [fetchUserData]);
+  }, []);
 
   const renderTokens = userData.map((token) => (
     <OwnerTokenCard

@@ -53,19 +53,17 @@ const TokenSection = ({ accountAddress }: { accountAddress: string }) => {
     fetchUserData();
   }, [fetchUserData]);
 
-  const memoizedTokens = useMemo(() => 
-    userData.map((token) => (
-      <OwnerTokenCard
-        key={token.mintedToken.id}
-        imageUrl={`https://emerald-managerial-firefly-535.mypinata.cloud/ipfs/${token.mintedToken.tokenThumbail}`}
-        tokenName={token.mintedToken.tokenName}
-        availableToken={token.mintedToken.availableToken}
-        tokenPrice={token.mintedToken.tokenPrice}
-        isReleased={token.mintedToken.isReleased}
-        tokenId={Number(token.mintedToken.tokenId)}
-      />
-    )) || [], [userData]
-  );
+  const renderTokens = userData.map((token) => (
+    <OwnerTokenCard
+      key={token.mintedToken.id}
+      imageUrl={`https://emerald-managerial-firefly-535.mypinata.cloud/ipfs/${token.mintedToken.tokenThumbail}`}
+      tokenName={token.mintedToken.tokenName}
+      availableToken={token.mintedToken.availableToken}
+      tokenPrice={token.mintedToken.tokenPrice}
+      isReleased={token.mintedToken.isReleased}
+      tokenId={Number(token.mintedToken.tokenId)}
+    />
+  )) || [];
 
   const renderContent = () => {
     if (!auth.isAuthenticated) {
@@ -116,7 +114,7 @@ const TokenSection = ({ accountAddress }: { accountAddress: string }) => {
             {userData && userData.length > 0 ? (
               <>
                 <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6'>
-                  {memoizedTokens}
+                  {renderTokens}
                 </div>
                 <Link href={`/mint?address=${accountAddress}`}>
                   <button className='bg-orange-500 text-white px-4 py-2 rounded-xl mt-4 hover:bg-orange-600 transition-colors'>

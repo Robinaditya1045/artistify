@@ -57,7 +57,6 @@ const { origin } = useAuth();
 <CampModal />
 // Origin SDK's built-in wallet connection modal
 ```
-
 ### 3. NFT Minting Process
 1. **File Upload**: User selects image file
 2. **IPFS Upload**: File uploaded to decentralized storage

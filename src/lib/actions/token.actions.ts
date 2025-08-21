@@ -17,7 +17,7 @@ export const mintToken = async (data: {
   try {
     // Find user by address
     const user = await prisma.user.findUnique({
-      where: { accountAddress: userAddress.toLowerCase() },
+      where: { accountAddress: userAddress },
     });
     console.log(user)
 
@@ -56,7 +56,7 @@ export const buyToken = async (data: {
   try {
     // Find user by address
     const user = await prisma.user.findUnique({
-      where: { accountAddress: accountAddress.toLowerCase() },
+      where: { accountAddress: accountAddress },
     });
 
     if (!user) {
@@ -75,7 +75,7 @@ export const buyToken = async (data: {
     // Create bought token record
     const boughtToken = await prisma.boughtToken.create({
       data: {
-        accountAddress: accountAddress.toLowerCase(),
+        accountAddress: accountAddress,
         tokensBought,
         user: { connect: { id: user.id } },
         mintedToken: { connect: { id: mintedToken.id } }, // Ensure the mintedToken relation is correctly specified
@@ -121,5 +121,90 @@ export const releaseSong = async (tokenId: number) => {
   } catch (error) {
     console.error('Error releasing song:', error);
     throw new Error('Error releasing song');
+  }
+}
+
+export const getMintedTokens = async() => {
+    try {
+      const mintedTokens = await prisma.mintedToken.findMany({
+        include: {
+         user: {
+          include: {
+            userInfo: true
+          }
+         },
+        }
+      });
+      return mintedTokens;
+    } catch (error) {
+      console.error('Error fetching minted tokens:', error);
+      throw new Error('Error fetching minted tokens');
+    }
+}
+
+export const getMintedTokenById = async(tokenId: number) => {
+  try {
+    const mintedToken = await prisma.mintedToken.findUnique({
+      where: { tokenId: Number(tokenId) },
+      include: {
+        user: {
+          include: {
+            userInfo: true,
+          }, 
+        },
+      },
+    });
+
+    if (!mintedToken) {
+      throw new Error('Token not found');
+    }
+
+    return mintedToken;
+  } catch (error) {
+    console.error('Error fetching minted token:', error);
+    throw new Error('Error fetching minted token');
+  }
+}
+
+export const getTokensToDistribute = async() => {
+    try {
+      const mintedTokens = await prisma.mintedToken.findMany({
+            where: {
+                isReleased: true
+            }
+      });
+      return mintedTokens;
+    } catch (error) {
+      console.error('Error fetching minted tokens:', error);
+      return error;
+    }
+}
+
+export const getUserMintedTokens = async (address: string) => {
+  try {
+    // Find the user by their account address
+    const user = await prisma.user.findUnique({
+      where: { accountAddress: address },
+      include: {
+        mintedTokens: {
+          include: {
+            user: {
+              include: {
+                userInfo: true
+              }
+            }
+          }
+        }
+      }
+    });
+    
+    if (!user) {
+      throw new Error('User not found');
+    }
+    
+    return user.mintedTokens;
+  } catch (error) {
+    console.error('Error fetching user minted tokens:', error);
+    throw new Error('Error fetching user minted tokens');
   }
 }

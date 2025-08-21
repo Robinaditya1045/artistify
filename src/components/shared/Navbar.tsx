@@ -36,6 +36,12 @@ const Navbar = () => {
               >
                 Listen
               </Link>
+              <Link 
+                href="/uploadsong" 
+                className="text-gray-300 hover:text-orange-400 transition-colors text-sm font-medium"
+              >
+                Upload Song
+              </Link>
             </div>
 
             {/* Search Bar */}
@@ -96,6 +102,13 @@ const Navbar = () => {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Listen
+              </Link>
+              <Link 
+                href="/uploadsong" 
+                className="text-gray-300 hover:text-orange-400 transition-colors text-sm font-medium py-1"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Upload Song
               </Link>
             </div>
 

@@ -124,9 +124,10 @@ const Page = ({ params }: PageProps) => {
 
   if (!tokenData) {
     return (
-      <div className='bg-[#0a0a0a] w-full min-h-screen text-orange-500 flex items-center justify-center'>
-        <FaSpinner className="animate-spin text-4xl" />
-      </div>
+      // <div className='bg-[#0a0a0a] w-full min-h-screen text-orange-500 flex items-center justify-center'>
+      //   <FaSpinner className="animate-spin text-4xl" />
+      // </div>
+      <></>
     );
   }
 
@@ -138,7 +139,7 @@ const Page = ({ params }: PageProps) => {
           <div className='w-1/2 h-24 rounded-lg bg-[#131316] gap-1 flex flex-col px-4 pt-2 hover:bg-[#1a1a1f] transition-colors'>
             <p className='text-sm opacity-60'>creater_name</p>
             <p>{tokenData.user?.userInfo?.name !== undefined ? tokenData.user.userInfo.name : 'Artist'}</p>
-            <Link className='flex items-center gap-2' href={`/portfolio/${tokenData.user.accountAddress}`}>
+            <Link className='flex items-center gap-2' target='_blank' href={`/portfolio/${tokenData.user.accountAddress}`}>
               <p className='text-orange-400 hover:text-orange-300 transition-colors'>{tokenData.user.accountAddress.substr(0, 8) + "..."}</p>
               <FaExternalLinkAlt className='text-orange-400 w-3' />
             </Link>

@@ -34,3 +34,21 @@ export const uploadSong = async (data: {
 
   return song;
 };
+
+export const getSongs = async() => {
+    try {
+        const songs = await prisma.song.findMany({
+            include: {
+              user: {
+                include: {
+                  userInfo: true,
+                },
+              },
+            },
+          });
+          return songs;
+    } catch (error: any) {
+        console.error('Error fetching songs:', error);
+        return error;
+    }
+}

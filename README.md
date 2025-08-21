@@ -1,43 +1,153 @@
-# Sound-Stake
+# Artistify
 
-## Introduction
+Artistify is a modern Web3 platform that empowers artists to mint and showcase their creative work as NFTs. Built with Next.js and integrated with Origin SDK, it provides a seamless authentication experience and user-friendly interface for creating, storing, and managing digital assets with decentralized IPFS storage.
 
-Welcome to  **Sound-Stake**, an Music Staking Platform aims to address these challenges by introducing a decentralized, blockchain-based solution that enables direct interaction between artists and fans. It leverages music staking as a way for fans to invest in music projects and share in the financial success of the artists they support. 
-. By leveraging **BASE blockchain technology** Sound-Stake rewards fans/users with tokens.
+## 🚀 Features
 
+### Origin SDK Integration
+- **useAuth Hook**: Seamless authentication state management
+- **CampModal Component**: User-friendly wallet connection interface
+- **Web3 Provider**: Integrated ethers.js for blockchain interactions
 
-## Tech Stack
+### Core Functionality
+- 🔐 **Wallet Authentication** via Origin SDK
+- 🎵 **NFT Minting** with custom metadata
+- 📁 **IPFS File Upload** for decentralized storage
+- 📱 **Responsive Design** optimized for all devices
+- 🔗 **Transaction Tracking** with BlockScout integration
 
-Sound-Stake utilizes a diverse array of technologies to create seamless and engaging user experiences:
+## 🛠️ Technical Stack
 
-- **Nextjs**: A powerful React framework for building server-side rendered applications, facilitating the development of dynamic and SEO-friendly components.
-- **Base**: An Ethereum Layer 2 blockchain that provides faster and cheaper transactions while maintaining the security of the Ethereum network.
-- **Solidity**: A smart contract programming language used to develop decentralized applications (dApps) on the Ethereum blockchain.
-- **Hardhat**: A development environment for compiling, deploying, testing, and debugging smart contracts on Ethereum-based blockchains.
-- **Pinata**:  A service for securely managing and sharing files on IPFS, often used for hosting decentralized media or metadata.
-- **IPFS**: The InterPlanetary File System, a distributed protocol for storing and sharing files across a decentralized network.
-- **PostgreSQL**:A powerful open-source relational database management system used to store and manage application data.
-- **Prisma**: An ORM (Object-Relational Mapping) tool used for interacting with PostgreSQL and other databases in a type-safe and efficient way.
-- **Vercel**:  A deployment platform optimized for hosting Next.js applications with support for serverless functions, caching, and performance optimization.
-- **neon DB**: A managed PostgreSQL solution optimized for serverless computing, offering scalability and high availability for your database needs.
+- **Frontend**: Next.js 14 + TypeScript + Tailwind CSS
+- **Web3**: Origin SDK + Ethers.js
+- **Storage**: IPFS via Pinata
+- **Blockchain**: Base Network (Camp testnet compatible)
+- **Styling**: Tailwind CSS with dark mode support
 
+## 📋 API Endpoints
 
-### Key Features
+### `/api/uploadToIPFS`
+```typescript
+POST /api/uploadToIPFS
+Content-Type: multipart/form-data
 
-- **Staking for Music Projects**: Fans can stake tokens to support a specific artist or music project, becoming early backers. These tokens then represent their share in the revenue generated through which they can earn on the basis of the songs reach.This allows fans to have a stake in the success of the music they love.
+Body: FormData with 'file' field
+Response: { hash: string, url: string }
+```
 
-- **Fair Revenue Distribution**: Revenue generated from streams, sales, or other income sources is distributed directly to artists, stakeholders, and fans who have staked in the project. This is done transparently using smart contracts, ensuring that everyone receives their fair share without delays.
+### `/api/uploadMetadataToIPFS`
+```typescript
+POST /api/uploadMetadataToIPFS
+Content-Type: application/json
 
-- **Artist Empowerment**: Artists maintain creative control and ownership of their work. They can fund their projects by raising capital from their fan base through staking, bypassing traditional gatekeepers like record labels and streaming platforms.
-The platform gives artists direct access to their fans, allowing them to build stronger, more engaged communities.
+Body: { name, description, image, attributes }
+Response: { hash: string, url: string }
+```
 
-- **Decentralization and Transparency**: Using blockchain technology, the platform offers full transparency into how revenue is generated, distributed, and shared. Smart contracts automatically execute the distribution of funds, eliminating the need for intermediaries.
-Both artists and fans can track and verify the flow of funds and staking rewards in realtime.
+## 🎯 Key Components
 
+### 1. Authentication Flow
+```tsx
+const { origin } = useAuth();
+// Access to Origin SDK authentication state
+```
 
-### Contract Deployment Address
-- **0x11Aa4277F3315A610d526621fc61C3598d9839A9**
+### 2. Wallet Connection
+```tsx
+<CampModal />
+// Origin SDK's built-in wallet connection modal
+```
+### 3. NFT Minting Process
+1. **File Upload**: User selects image file
+2. **IPFS Upload**: File uploaded to decentralized storage
+3. **Metadata Creation**: JSON metadata with NFT properties
+4. **Smart Contract**: ERC721 safeMint function call
+5. **Transaction Tracking**: BlockScout integration for verification
 
-## 👨‍💻 Contributors
+### 4. Theme System
+- Automatic dark/light mode detection
+- User preference persistence
+- System theme integration
+- Smooth transitions
 
-- [@VedantJadhav0017](https://github.com/VedantJadhav0017)
+## 🔧 Configuration
+
+### Environment Variables
+```env
+PINATA_JWT=your_pinata_jwt_token
+ORIGIN_CLIENT_ID=your_origin_client_id
+```
+
+### Smart Contract Setup
+```javascript
+const ERC721ABI = [
+  "function safeMint(address to, string tokenURI) public",
+  // ... other ERC721 functions
+];
+
+const CA_ADDRESS = "0xC562c59452c2C721d22353dE428Ec211C4069f60";
+```
+
+## 🎨 UI/UX Features
+
+### Responsive Design
+- Mobile-first approach
+- Adaptive layouts for different screen sizes
+- Touch-friendly interface elements
+
+### Interactive Elements
+- Loading states with spinner animations
+- File preview functionality
+- Form validation and error handling
+- Success/error status messages
+
+### Accessibility
+- ARIA labels and roles
+- Keyboard navigation support
+- Screen reader compatibility
+- Focus management
+
+## 🔒 Security Considerations
+
+1. **File Validation**: Image type and size validation
+2. **Error Handling**: Comprehensive try-catch blocks
+3. **Input Sanitization**: Form data validation
+4. **Transaction Safety**: User confirmation before minting
+
+## 📱 User Journey
+
+1. **Landing**: User sees the main interface
+2. **Connection**: Click CampModal to connect wallet
+3. **Creation**: Fill NFT details and upload image
+4. **Minting**: Confirm transaction and wait for completion
+5. **Success**: View minted NFT with transaction link
+
+## 🔄 Integration Benefits
+
+### For Sound-Stake Platform
+- Modern authentication system
+- Simplified Web3 onboarding
+- Enhanced user experience
+- Reduced development complexity
+
+### For Users
+- Familiar wallet connection flow
+- Seamless Cross-platform compatibility
+- Enhanced security
+- Better mobile experience
+
+## 🚀 Future Enhancements
+
+- **Batch Minting**: Multiple NFTs in single transaction
+- **Collection Management**: Organize NFTs into collections
+- **Advanced Metadata**: Rich media support
+- **Social Features**: Share and showcase NFTs
+- **Analytics**: Minting statistics and insights
+
+## 🔗 Resources
+
+- [Origin SDK Documentation](https://docs.campnetwork.xyz)
+- [Camp Network](https://campnetwork.xyz)
+- [IPFS Documentation](https://docs.ipfs.io)
+
+This implementation serves as a foundation for building sophisticated Web3 applications with modern authentication and seamless user experiences.

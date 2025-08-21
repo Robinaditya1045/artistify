@@ -5,13 +5,13 @@ import React, { useEffect, useState } from 'react'
 // import FeinAbi from '@/contract_data/Fein.json';
 import { ethers } from 'ethers';
 import Loader from '../loader';
-import axios from 'axios';
 import AdminTokenCard from '@/components/cards/AdminTokenCard';
+import { getTokensToDistribute } from '@/lib/actions/token.actions';
 
 const Page = () => {
     // const [Fein, setFein] = useState<any>(null);
     // const [adminAddress, setAdminAddress] = useState<string | null>(null);
-    const [currentAddress, setCurrentAddress] = useState<string | null>(null);
+    // const [currentAddress, setCurrentAddress] = useState<string | null>(null);
     const [releasedTokens, setReleasedTokens] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -23,7 +23,7 @@ const Page = () => {
                 const signer = provider.getSigner();
                 const address = await signer.getAddress();
                 console.log('curr address', address);
-                setCurrentAddress(address);
+                // setCurrentAddress(address);
 
                 // const contractInstance5 = new ethers.Contract(
                 //     FeinAddress.address,
@@ -56,9 +56,14 @@ const Page = () => {
     useEffect(() => {
         const fetchTokens = async () => {
             try {
-                const response = await axios.get('/api/getTokensToDistribute');
-                console.log('data', response.data);
-                setReleasedTokens(response.data.mintedTokens);
+                const response = await getTokensToDistribute();
+                console.log('data', response);
+                if (Array.isArray(response)) {
+                    setReleasedTokens(response);
+                } else {
+                    setReleasedTokens([]);
+                    console.error('Expected array response but got:', response);
+                }
             } catch (error) {
                 console.error('Error fetching tokens:', error);
             } finally {
@@ -74,13 +79,13 @@ const Page = () => {
         return <Loader />;
     }
 
-    if (currentAddress !== "0x25FA79cf8ae3A3573511c6db759833e454e091d3") {
-        return (
-            <div className="flex items-center justify-center h-screen">
-                <h1 className="text-3xl font-bold text-red-500">Access Denied</h1>
-            </div>
-        );
-    }
+    // if (currentAddress !== "0x25FA79cf8ae3A3573511c6db759833e454e091d3") {
+    //     return (
+    //         <div className="flex items-center justify-center h-screen">
+    //             <h1 className="text-3xl font-bold text-red-500">Access Denied</h1>
+    //         </div>
+    //     );
+    // }
 
     return (
         <div className="p-8 min-h-screen bg-[#18181a]">

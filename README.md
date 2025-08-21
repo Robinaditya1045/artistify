@@ -38,3 +38,6 @@ Both artists and fans can track and verify the flow of funds and staking rewards
 ### Contract Deployment Address
 - **0x11Aa4277F3315A610d526621fc61C3598d9839A9**
 
+## 👨‍💻 Contributors
+
+- [@VedantJadhav0017](https://github.com/VedantJadhav0017)
